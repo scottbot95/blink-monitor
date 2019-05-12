@@ -12,13 +12,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { ElectronService } from './providers/electron.service';
+import { ElectronService } from './core/services/electron.service';
 
-import { WebviewDirective } from './directives/webview.directive';
+import { WebviewDirective } from './shared/webview.directive';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreModule } from './core/core.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -26,26 +26,22 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    WebviewDirective
-  ],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (HttpLoaderFactory),
+        useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CoreModule
   ],
   providers: [ElectronService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
